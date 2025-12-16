@@ -7,7 +7,7 @@ class NoticeService extends Service {
     const { rows: list, count: total } = await this.ctx.model.Notice.findAndCountAll({
       limit: size,
       offset,
-      order: [['created_at', 'DESC']], // 按数据库的created_at倒序（最新通知在前）
+      order: [[ 'created_at', 'DESC' ]], // 按数据库的created_at倒序（最新通知在前）
       attributes: null,
     });
 

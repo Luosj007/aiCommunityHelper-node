@@ -2,6 +2,11 @@
 
 /** @type Egg.EggPlugin */
 module.exports = {
+  // 启用jwt插件
+  jwt: {
+    enable: true,
+    package: 'egg-jwt',
+  },
   // 启用 egg-sequelize 插件（用于连接数据库）
   sequelize: {
     enable: true,

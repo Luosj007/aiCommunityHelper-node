@@ -1,15 +1,27 @@
-// 权限中间件：仅允许管理端访问增删改接口
 module.exports = () => {
   return async (ctx, next) => {
-    // 实际项目中需替换为真实的身份验证逻辑
-    // 例：从请求头获取Token，验证是否为管理员
-    const adminToken = ctx.get('X-Admin-Token');
-    if (!adminToken || !await ctx.service.admin.verifyToken(adminToken)) {
-      ctx.status = 403;
-      ctx.body = { code: 403, message: '无权限操作（需管理员身份）' };
-      return;
+    try {
+      const authorization = ctx.headers.authorization;
+      if (!authorization) {
+        ctx.throw(401, '未提供token');
+      }
+
+      const token = authorization.split(' ')[1];
+      if (!token) {
+        ctx.throw(401, 'token格式错误');
+      }
+
+      const decoded = ctx.app.jwt.verify(token, ctx.app.config.jwt.secret);
+      ctx.state.user = decoded;
+      await next();
+    } catch (err) {
+      if (err.name === 'JsonWebTokenError') {
+        ctx.throw(401, '无效的token');
+      } else if (err.name === 'TokenExpiredError') {
+        ctx.throw(401, 'token已过期');
+      } else {
+        ctx.throw(err.status || 500, err.message);
+      }
     }
-    // 验证通过，继续执行后续逻辑
-    await next();
   };
 };
