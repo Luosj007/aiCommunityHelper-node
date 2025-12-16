@@ -8,33 +8,33 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1734132560965_1234';
 
   // ========== 新增：注册全局中间件（核心！） ==========
-  config.middleware = ['error', 'auth']; // error放最前面，捕获所有错误；auth按需在路由调用
+  config.middleware = [ 'error', 'auth' ]; // error放最前面，捕获所有错误；auth按需在路由调用
   // 可选：给auth中间件配置忽略路径（登录接口不校验）
   config.auth = {
     ignore: [
-      '/admin/login', 
+      '/admin/login',
       '/miniprogram/login',
-      '/admin/create-admin'
+      '/admin/create-admin',
     ],
   };
 
   // 数据库配置（保留不变）
   config.sequelize = {
-    dialect: 'mysql', 
-    host: 'localhost', 
-    port: 3306, 
-    database: 'ai_community_helper', 
-    username: 'root', 
-    password: '1234', 
+    dialect: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    database: 'ai_community_helper',
+    username: 'root',
+    password: '1234',
     define: {
-      timestamps: true, 
-      underscored: true, 
-      freezeTableName: true, 
+      timestamps: true,
+      underscored: true,
+      freezeTableName: true,
     },
     sync: {
-      force: false, 
+      force: false,
     },
-    timezone: '+08:00', 
+    timezone: '+08:00',
   };
 
   config.jwt = {
@@ -44,17 +44,17 @@ module.exports = appInfo => {
   // ========== cors配置保留，补充细节 ==========
   config.cors = {
     origin: '*', // 开发环境允许所有来源
-    allowMethods: 'GET,POST,PUT,DELETE,OPTIONS', 
-    credentials: true, 
+    allowMethods: 'GET,POST,PUT,DELETE,OPTIONS',
+    credentials: true,
   };
 
   // ========== CSRF配置优化 ==========
   config.security = {
     csrf: {
       // 同时忽略后台登录接口，避免OPTIONS预检报错
-      ignore: ctx => ctx.path.includes('/miniprogram/') 
-                  || ctx.path.includes('/admin/login') 
-                  || ctx.path.includes('/admin/create-admin'), 
+      ignore: ctx => ctx.path.includes('/miniprogram/')
+                  || ctx.path.includes('/admin/login')
+                  || ctx.path.includes('/admin/create-admin'),
     },
   };
 

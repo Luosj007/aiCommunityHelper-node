@@ -12,7 +12,7 @@ const wxLoginRules = {
 };
 
 class LoginController extends Controller {
-  
+
   // ========== 1. 后台管理员登录接口 ==========
   async adminLogin() {
     const { ctx } = this;

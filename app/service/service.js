@@ -26,7 +26,7 @@ class ServiceService extends Service {
   // 更新服务
   async update(id, data) {
     const service = await this.findById(id);
-    if(!service) return null;
+    if (!service) return null;
     return service.update(data);
   }
 
