@@ -10,7 +10,7 @@ module.exports = app => {
   router.post('/admin/login', controller.login.adminLogin); // 登录接口（无需认证）
   router.post('/miniprogram/login', controller.login.wxLogin); // 登录接口（无需认证）
   // 需认证的接口
-  router.get('/user/current', auth, controller.login.getCurrentUser); // 获取当前用户信息（需认证）
+  router.get('/user/current', auth, controller.login.getCurrentUser); // 获取当前用户信息
 
   // 小程序端服务接口
   router.get('/miniprogram/services', controller.service.list);
@@ -19,8 +19,8 @@ module.exports = app => {
   router.get('/admin/services', controller.service.list);
   router.get('/admin/services/:id', controller.service.detail);
   router.post('/admin/addServices', auth, controller.service.create);
-  router.put('/admin/updaServices/:id', app.middleware.auth(), controller.service.update);
-  router.delete('/admin/delServices/:id', app.middleware.auth(), controller.service.destroy);
+  router.put('/admin/updaServices/:id', auth, controller.service.update);
+  router.delete('/admin/delServices/:id', auth, controller.service.destroy);
 
   // 小程序端通知接口
   router.get('/miniprogram/notices', controller.notice.list);
@@ -28,18 +28,19 @@ module.exports = app => {
   // 管理端
   router.get('/admin/notices', controller.notice.list);
   router.get('/admin/notices/:id', controller.notice.detail);
-  router.post('/admin/addNotices', app.middleware.auth(), controller.notice.create);
-  router.put('/admin/updaNotices/:id', app.middleware.auth(), controller.notice.update);
-  router.delete('/admin/delNotices/:id', app.middleware.auth(), controller.notice.destroy);
+  router.post('/admin/addNotices', auth, controller.notice.create);
+  router.put('/admin/updaNotices/:id', auth, controller.notice.update);
+  router.delete('/admin/delNotices/:id', auth, controller.notice.destroy);
 
   // 小程序端工单接口
   router.get('/miniprogram/workOrders', controller.workOrder.list);
   // router.get('/miniprogram/workOrders/:id', controller.workOrder.detail);
   router.post('/miniprogram/addWorkOrders', controller.workOrder.create);
   // 注：auth()为你现有权限中间件，若没有可先保留，后续补充
-  router.get('/admin/workOrders', app.middleware.auth(), controller.workOrder.list);
-  router.get('/admin/workOrders/:id', app.middleware.auth(), controller.workOrder.detail);
-  router.post('/admin/addWorkOrders', app.middleware.auth(), controller.workOrder.create);
-  router.put('/admin/updaWorkOrders/:id', app.middleware.auth(), controller.workOrder.update);
-  router.delete('/admin/delWorkOrders/:id', app.middleware.auth(), controller.workOrder.destroy);
+  // 管理端
+  router.get('/admin/workOrders', controller.workOrder.list);
+  router.get('/admin/workOrders/:id', controller.workOrder.detail);
+  router.post('/admin/addWorkOrders', auth, controller.workOrder.create);
+  router.put('/admin/updaWorkOrders/:id', auth, controller.workOrder.update);
+  router.delete('/admin/delWorkOrders/:id', auth, controller.workOrder.destroy);
 };
