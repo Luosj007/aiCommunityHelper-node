@@ -19,7 +19,7 @@ const createRules = {
   status: { type: 'string', required: true, max: 20 },
   status_text: { type: 'string', required: true, max: 20 },
   content: { type: 'string', required: true, min: 1 },
-  time: { type: 'string', required: true, format: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ }, // 显式指定时间格式
+  // time: { type: 'string', required: true, format: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ }, // 显式指定时间格式
 };
 
 const updateRules = {
@@ -27,7 +27,7 @@ const updateRules = {
   status: { type: 'string', required: false, max: 20 },
   status_text: { type: 'string', required: false, max: 20 },
   content: { type: 'string', required: false, min: 1 },
-  time: { type: 'string', required: false, format: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ },
+  // time: { type: 'string', required: false, format: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ },
 };
 
 class WorkOrderController extends Controller {
@@ -43,8 +43,8 @@ class WorkOrderController extends Controller {
       ctx.validate(listRules, params);
       // 调用服务层
       const result = await ctx.service.workOrder.findAll({
-        page: params.page || 1,
-        size: params.size || 10,
+        page: params.page,
+        size: params.size,
       });
       ctx.body = { code: 200, msg: '查询成功', data: result };
     } catch (err) {
@@ -79,9 +79,9 @@ class WorkOrderController extends Controller {
     const { ctx } = this;
     try {
       // 显式解构参数（参考ArticleController的addArticleComment写法）
-      const { order_no, status, status_text, content, time } = ctx.request.body;
+      const { order_no, status, status_text, content } = ctx.request.body;
       // 构造校验参数（只传需要校验的字段）
-      const params = { order_no, status, status_text, content, time };
+      const params = { order_no, status, status_text, content };
       // 校验参数（核心：和ArticleController的校验写法完全一致）
       ctx.validate(createRules, params);
       // 调用服务层创建工单
@@ -104,13 +104,18 @@ class WorkOrderController extends Controller {
         ctx.body = { code: 422, msg: '缺少工单ID' };
         return;
       }
+      const workOrderId = Number(id);
+      const workOrder = await ctx.service.workOrder.findById(workOrderId);
+      if (!workOrder) {
+        ctx.body = { code: 404, msg: '工单不存在' };
+        return;
+      }      
       // 解构更新参数
-      const { order_no, status, status_text, content, time } = ctx.request.body;
-      const params = { order_no, status, status_text, content, time };
-      // 校验更新参数
+      const { order_no, status, status_text, content } = ctx.request.body;
+      const params = { order_no, status, status_text, content };
       ctx.validate(updateRules, params);
       // 调用服务层更新
-      const updatedWorkOrder = await ctx.service.workOrder.update(Number(id), params);
+      const updatedWorkOrder = await ctx.service.workOrder.update(workOrderId, params);
       ctx.body = { code: 200, msg: '工单更新成功', data: updatedWorkOrder };
     } catch (err) {
       ctx.body = { code: 422, msg: err.message || '更新工单失败' };
@@ -127,12 +132,15 @@ class WorkOrderController extends Controller {
         ctx.body = { code: 422, msg: '缺少工单ID' };
         return;
       }
-      // 调用服务层删除
-      const isDeleted = await ctx.service.workOrder.destroy(Number(id));
-      if (!isDeleted) {
+      const workOrderId = Number(id);
+      // 校验工单是否存在
+      const workOrder = await ctx.service.workOrder.findById(workOrderId);
+      if (!workOrder) {
         ctx.body = { code: 404, msg: '工单不存在' };
         return;
-      }
+      }      
+      // 调用服务层删除
+      await ctx.service.workOrder.destroy(workOrderId);
       ctx.body = { code: 200, msg: '工单删除成功' };
     } catch (err) {
       ctx.body = { code: 422, msg: err.message || '删除工单失败' };

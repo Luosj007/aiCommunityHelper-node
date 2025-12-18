@@ -9,7 +9,7 @@ module.exports = app => {
       type: INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      comment: '工单ID（主键，自增）',
+      comment: '工单ID',
     },
     orderNo: {
       type: STRING(50),
@@ -31,11 +31,11 @@ module.exports = app => {
       allowNull: false,
       comment: '报修内容',
     },
-    time: {
-      type: DATE,
-      allowNull: false,
-      comment: '工单提交时间',
-    },
+    // time: {
+    //   type: DATE,
+    //   allowNull: false,
+    //   comment: '工单提交时间',
+    // },
   }, {
     comment: '用户报修工单表',
     // 核心配置：开启后，模型驼峰属性 → 数据库下划线字段

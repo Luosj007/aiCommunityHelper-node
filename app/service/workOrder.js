@@ -22,38 +22,38 @@ class WorkOrderService extends Service {
   async findAll({ page, size }) {
     const offset = (page - 1) * size;
     const { rows: list, count: total } = await this.ctx.model.WorkOrder.findAndCountAll({
-      limit: Number(size),
-      offset: Number(offset),
+      limit: size,
+      offset,
       order: [[ 'id', 'DESC' ]], 
       attributes: null, // 返回所有字段
     });
-    return { list, total, page: Number(page), size: Number(size) };
+    return { list, total, page, size };
   }
 
-  // 根据ID查询工单详情（两端共用）
+  // 根据ID查询工单详情
   async findById(id) {
     return this.ctx.model.WorkOrder.findByPk(id);
   }
 
   // 新增工单（小程序端+管理端可用，小程序核心功能）
-  async create(workOrderData) {
+  async create(data) {
     // 核心修复：将前端下划线参数转驼峰（匹配模型字段）
-    const camelData = this.transformParams(workOrderData);
+    const camelData = this.transformParams(data);
     // 自动填充created_at/updated_at（Sequelize自动处理）
     return this.ctx.model.WorkOrder.create(camelData);
   }
 
-  // 更新工单（仅管理端）
-  async update(id, updateData) {
+  // 更新工单
+  async update(id, data) {
     const workOrder = await this.findById(id);
     if (!workOrder) return null;
     // 修复：更新参数也需要转驼峰
-    const camelUpdateData = this.transformParams(updateData);
+    const camelUpdateData = this.transformParams(data);
     // updated_at会自动更新
     return workOrder.update(camelUpdateData);
   }
 
-  // 删除工单（仅管理端）
+  // 删除工单
   async destroy(id) {
     const workOrder = await this.findById(id);
     if (!workOrder) return false;

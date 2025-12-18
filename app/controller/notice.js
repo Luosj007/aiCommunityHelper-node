@@ -1,6 +1,5 @@
 const { Controller } = require('egg');
 
-// 抽离校验规则（对齐WorkOrderController的规则格式）
 const listRules = {
   page: { type: 'int', required: false, default: 1, min: 1 },
   size: { type: 'int', required: false, default: 10, min: 1, max: 50 },
@@ -40,8 +39,8 @@ class NoticeController extends Controller {
       ctx.validate(listRules, params);
       // 调用服务层
       const result = await ctx.service.notice.findAll({
-        page: params.page || 1,
-        size: params.size || 10,
+        page: params.page,
+        size: params.size,
       });
       // 统一响应格式（对齐WorkOrder）
       ctx.body = { code: 200, msg: '查询成功', data: result };
@@ -111,7 +110,7 @@ class NoticeController extends Controller {
       }
 
       // 2. 解构更新参数+校验
-      const { title, time, content } = ctx.request.body;
+      const { title, content } = ctx.request.body;
       const params = { title, content };
       ctx.validate(updateRules, params);
 
