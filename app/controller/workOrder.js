@@ -19,7 +19,6 @@ const createRules = {
   status: { type: 'string', required: true, max: 20 },
   status_text: { type: 'string', required: true, max: 20 },
   content: { type: 'string', required: true, min: 1 },
-  // time: { type: 'string', required: true, format: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ }, // 显式指定时间格式
 };
 
 const updateRules = {
@@ -27,7 +26,6 @@ const updateRules = {
   status: { type: 'string', required: false, max: 20 },
   status_text: { type: 'string', required: false, max: 20 },
   content: { type: 'string', required: false, min: 1 },
-  // time: { type: 'string', required: false, format: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ },
 };
 
 class WorkOrderController extends Controller {
@@ -52,11 +50,10 @@ class WorkOrderController extends Controller {
     }
   }
 
-  // 根据ID查询工单详情（小程序+管理端共用）
   async detail() {
     const { ctx } = this;
     try {
-      const { id } = ctx.request.query;
+      const { id } = ctx.params;
       const params = {
         id: id ? Number(id) : undefined,
       };
@@ -98,8 +95,8 @@ class WorkOrderController extends Controller {
   async update() {
     const { ctx } = this;
     try {
-      // 先校验ID是否存在
-      const { id } = ctx.request.body;
+      // 修改点2：从路径参数获取id（不是body）
+      const { id } = ctx.params;
       if (!id) {
         ctx.body = { code: 422, msg: '缺少工单ID' };
         return;
@@ -110,7 +107,7 @@ class WorkOrderController extends Controller {
         ctx.body = { code: 404, msg: '工单不存在' };
         return;
       }      
-      // 解构更新参数
+      // 解构更新参数（注意：body中不再需要id字段）
       const { order_no, status, status_text, content } = ctx.request.body;
       const params = { order_no, status, status_text, content };
       ctx.validate(updateRules, params);
@@ -126,8 +123,8 @@ class WorkOrderController extends Controller {
   async destroy() {
     const { ctx } = this;
     try {
-      // 参考ArticleController的deleteArticle写法
-      const { id } = ctx.request.body;
+      // 修改点3：从路径参数获取id（不是body）
+      const { id } = ctx.params;
       if (!id) {
         ctx.body = { code: 422, msg: '缺少工单ID' };
         return;

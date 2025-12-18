@@ -25,11 +25,9 @@ const updateRules = {
 };
 
 class NoticeController extends Controller {
-  // 获取通知列表（小程序端）
   async list() {
     const { ctx } = this;
     try {
-      // 显式处理参数（对齐WorkOrder的参数转换逻辑）
       const { page, size } = ctx.request.query;
       const params = {
         page: page ? Number(page) : undefined,
@@ -42,19 +40,15 @@ class NoticeController extends Controller {
         page: params.page,
         size: params.size,
       });
-      // 统一响应格式（对齐WorkOrder）
       ctx.body = { code: 200, msg: '查询成功', data: result };
     } catch (err) {
-      // 统一错误捕获（参数错误/业务错误）
       ctx.body = { code: 422, msg: err.message || '获取通知列表失败' };
     }
   }
 
-  // 获取通知详情（小程序+管理端）
   async detail() {
     const { ctx } = this;
     try {
-      // 显式处理路径参数id（转Number）
       const { id } = ctx.params;
       const params = {
         id: id ? Number(id) : undefined,

@@ -25,7 +25,7 @@ class WorkOrderService extends Service {
       limit: size,
       offset,
       order: [[ 'id', 'DESC' ]], 
-      attributes: null, // 返回所有字段
+      attributes: null, 
     });
     return { list, total, page, size };
   }
