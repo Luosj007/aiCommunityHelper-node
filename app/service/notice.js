@@ -1,13 +1,12 @@
 const { Service } = require('egg');
 
 class NoticeService extends Service {
-  // 查询通知列表（分页+按创建时间倒序）
   async findAll({ page, size }) {
     const offset = (page - 1) * size;
     const { rows: list, count: total } = await this.ctx.model.Notice.findAndCountAll({
       limit: size,
       offset,
-      order: [[ 'created_at', 'DESC' ]], // 按数据库的created_at倒序（最新通知在前）
+      order: [[ 'id', 'ASC' ]], 
       attributes: null,
     });
 

@@ -24,7 +24,7 @@ class WorkOrderService extends Service {
     const { rows: list, count: total } = await this.ctx.model.WorkOrder.findAndCountAll({
       limit: Number(size),
       offset: Number(offset),
-      order: [[ 'time', 'DESC' ]], // 按提交时间倒序
+      order: [[ 'id', 'DESC' ]], 
       attributes: null, // 返回所有字段
     });
     return { list, total, page: Number(page), size: Number(size) };

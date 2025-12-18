@@ -17,13 +17,11 @@ const detailRules = {
 
 const createRules = {
   title: { type: 'string', required: true, max: 200 },
-  time: { type: 'string', required: true, max: 50 },
   content: { type: 'string', required: true, min: 1 },
 };
 
 const updateRules = {
   title: { type: 'string', required: false, max: 200 },
-  time: { type: 'string', required: false, max: 50 },
   content: { type: 'string', required: false, min: 1 },
 };
 
@@ -81,8 +79,8 @@ class NoticeController extends Controller {
     const { ctx } = this;
     try {
       // 显式解构参数（对齐WorkOrder的create写法）
-      const { title, time, content } = ctx.request.body;
-      const params = { title, time, content };
+      const { title, content } = ctx.request.body;
+      const params = { title, content };
       // 校验参数（核心：对齐WorkOrder的校验逻辑）
       ctx.validate(createRules, params);
       // 调用服务层创建通知
@@ -114,7 +112,7 @@ class NoticeController extends Controller {
 
       // 2. 解构更新参数+校验
       const { title, time, content } = ctx.request.body;
-      const params = { title, time, content };
+      const params = { title, content };
       ctx.validate(updateRules, params);
 
       // 3. 调用服务层更新

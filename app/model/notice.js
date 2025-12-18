@@ -16,11 +16,6 @@ module.exports = app => {
       allowNull: false,
       comment: '通知标题',
     },
-    time: {
-      type: STRING(50),
-      allowNull: false,
-      comment: '通知发布时间（展示用）',
-    },
     content: {
       type: TEXT,
       allowNull: false,
