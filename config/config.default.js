@@ -1,4 +1,10 @@
 'use strict';
+// 上传图片用
+exports.multipart = {
+  mode: 'stream',   
+  fileSize: '5mb',
+};
+
 
 /** @type Egg.EggAppConfig */
 module.exports = appInfo => {

@@ -16,6 +16,7 @@ module.exports = app => {
   router.get('/miniprogram/services', controller.service.list);
   router.get('/miniprogram/services/:id', controller.service.detail);
   // 管理端
+  router.post('/admin/upload/serviceImg', auth, controller.upload.uploadImage);
   router.get('/admin/services', controller.service.list);
   router.get('/admin/services/:id', controller.service.detail);
   router.post('/admin/addServices', auth, controller.service.create);
