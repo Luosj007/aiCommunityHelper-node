@@ -44,4 +44,7 @@ module.exports = app => {
   router.post('/admin/addWorkOrders', auth, controller.workOrder.create);
   router.put('/admin/updaWorkOrders/:id', auth, controller.workOrder.update);
   router.delete('/admin/delWorkOrders/:id', auth, controller.workOrder.destroy);
+
+  // 问答表
+  router.get('/admin/qas', controller.qa.list);
 };
