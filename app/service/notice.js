@@ -6,7 +6,7 @@ class NoticeService extends Service {
     const { rows: list, count: total } = await this.ctx.model.Notice.findAndCountAll({
       limit: size,
       offset,
-      order: [[ 'id', 'ASC' ]], 
+      order: [[ 'id', 'DESC' ]], 
       attributes: null,
     });
 

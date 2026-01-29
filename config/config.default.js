@@ -22,7 +22,12 @@ module.exports = appInfo => {
       '/admin/login',
       '/miniprogram/login',
       '/admin/create-admin',
+      '/api/ai/chat'  
     ],
+  };
+
+  config.deepseek = {
+    apiKey: ''
   };
 
   // 数据库配置
@@ -62,7 +67,8 @@ module.exports = appInfo => {
       // 同时忽略后台登录接口，避免OPTIONS预检报错
       ignore: ctx => ctx.path.includes('/miniprogram/')
                   || ctx.path.includes('/admin/login')
-                  || ctx.path.includes('/admin/create-admin'),
+                  || ctx.path.includes('/admin/create-admin')
+                  || ctx.path.includes('/api/ai/chat')
     },
   };
 

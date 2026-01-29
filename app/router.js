@@ -47,4 +47,5 @@ module.exports = app => {
 
   // 问答表
   router.get('/admin/qas', controller.qa.list);
+  router.post('/api/ai/chat', controller.ai.chat);
 };
