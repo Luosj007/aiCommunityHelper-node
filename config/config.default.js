@@ -5,6 +5,12 @@ exports.multipart = {
   fileSize: '5mb',
 };
 
+exports.cluster = {
+  listen: {
+    port: process.env.PORT || 7001,
+    hostname: "0.0.0.0"
+  }
+};
 
 /** @type Egg.EggAppConfig */
 module.exports = appInfo => {

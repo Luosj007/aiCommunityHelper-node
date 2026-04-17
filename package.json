@@ -27,9 +27,9 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-aiCommunityHelper-node",
-    "stop": "egg-scripts stop --title=egg-server-aiCommunityHelper-node",
+    "start": "egg-scripts start --port $PORT",
     "dev": "egg-bin dev",
+    "stop": "egg-scripts stop",
     "test": "npm run lint -- --fix && npm run test:local",
     "test:local": "egg-bin test",
     "cov": "egg-bin cov",
