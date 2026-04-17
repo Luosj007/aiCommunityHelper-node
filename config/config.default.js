@@ -37,23 +37,23 @@ module.exports = appInfo => {
   };
 
   // 数据库配置
-  config.sequelize = {
-    dialect: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    database: 'ai_community_helper',
-    username: 'root',
-    password: '1234',
-    define: {
-      timestamps: true,
-      underscored: true,
-      freezeTableName: true,
-    },
-    sync: {
-      force: false,
-    },
-    timezone: '+08:00',
-  };
+  // config.sequelize = {
+  //   dialect: 'mysql',
+  //   host: 'localhost',
+  //   port: 3306,
+  //   database: 'ai_community_helper',
+  //   username: 'root',
+  //   password: '1234',
+  //   define: {
+  //     timestamps: true,
+  //     underscored: true,
+  //     freezeTableName: true,
+  //   },
+  //   sync: {
+  //     force: false,
+  //   },
+  //   timezone: '+08:00',
+  // };
 
   config.jwt = {
     secret: process.env.JWT_SECRET || 'default_jwt_secret_32bit', // 加默认值，避免.env没配置时报错

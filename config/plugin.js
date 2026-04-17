@@ -8,10 +8,10 @@ module.exports = {
     package: 'egg-jwt',
   },
   // 启用 egg-sequelize 插件（用于连接数据库）
-  sequelize: {
-    enable: true,
-    package: 'egg-sequelize',
-  },
+  // sequelize: {
+  //   enable: true,
+  //   package: 'egg-sequelize',
+  // },
   // 启用cors跨域插件
   cors: {
     enable: true,
